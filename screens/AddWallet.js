@@ -232,6 +232,6 @@ const styles = StyleSheet.create({
     },
     lineStyle:{
         borderBottomWidth: 1,
-        borderBottomColor: 'grey',
+        borderBottomColor: '#d9d9d9',
     },
 });

@@ -1,83 +1,59 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { NativeBaseProvider } from 'native-base';
-import { MaterialCommunityIcons, AntDesign, Ionicons, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons, AntDesign, Ionicons, Entypo, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import MyWallet from './MyWallet';
+import Watchlist from './Watchlist';
+
+const renderScene = SceneMap({
+  first: MyWallet,
+  second: Watchlist,
+});
 
 function MyWalletList() {
   const navigation = useNavigation();
 
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'My wallets' },
+    { key: 'second', title: 'Watchlist' },
+  ]);
+
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: '#026efd' }}
+      style={{ backgroundColor: '#f2f2f2' }}
+      onTabPress={({ route, preventDefault }) => {
+        if (route.key === 'first') {
+        } else {
+        }
+      }}
+
+      renderLabel={({ route, focused, color }) => (
+        <View>
+          {focused ? (
+            <Text style={{ color: '#026efd', fontWeight: 'bold' }}>{route.title}</Text>
+          ) : (
+            <Text style={{ color: 'grey', fontWeight: 'bold' }}>{route.title}</Text>
+          )}
+        </View>
+      )}
+    />
+  );
+
   return (
-    <View style={styles.container}>
-
-      <View style={styles.WalletList}>
-        <View style={styles.WalletListContent}>
-          <View style={styles.WalletInfoPanel}>
-            <View style={styles.ImagePanel}>
-              <Image
-                  source={require('../assets/rocket.png')}
-                  style={styles.WalletImage}
-                  alt="image"
-              ></Image>
-            </View>
-            <View style={styles.AddressPanel}>
-            <TouchableOpacity onPress={() => navigation.navigate("AddWallet")} ><Text style={styles.AddressText}>0x607...770</Text></TouchableOpacity>
-              <Text style={styles.CryptoText}>$0</Text>
-            </View>
-          </View>
-          <View style={styles.PercentPanel}>
-            <Text style={styles.PercentText}>0%</Text>
-            <AntDesign name="right" size={12} color="black" />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.WalletList}>
-        <View style={styles.WalletListContent}>
-        <View style={styles.WalletInfoPanel}>
-          <View style={styles.ImagePanel}>
-            <Image
-                source={require('../assets/rocket.png')}
-                style={styles.WalletImage}
-                alt="image"
-            ></Image>
-          </View>
-          <View style={styles.AddressPanel}>
-            <Text style={styles.AddressText}>0x607...770</Text>
-            <Text style={styles.CryptoText}>$200</Text>
-          </View>
-        </View>
-        <View style={styles.PercentPanel}>
-          <Text style={styles.PercentBlueText}>1.5%</Text>
-          <AntDesign name="right" size={12} color="black" />
-        </View>
-        </View>
-      </View>
-
-      <View style={styles.WalletList}>
-        <View style={styles.WalletListContent}>
-        <View style={styles.WalletInfoPanel}>
-          <View style={styles.ImagePanel}>
-            <Image
-                source={require('../assets/rocket.png')}
-                style={styles.WalletImage}
-                alt="image"
-            ></Image>
-          </View>
-          <View style={styles.AddressPanel}>
-            <Text style={styles.AddressText}>0x607...770</Text>
-            <Text style={styles.CryptoText}>$500</Text>
-          </View>
-        </View>
-        <View style={styles.PercentPanel}>
-          <Text style={styles.PercentRedText}>-1.5%</Text>
-          <AntDesign name="right" size={12} color="black" />
-        </View>
-        </View>
-      </View>
-      <StatusBar style="auto" />
-    </View>
+    <TabView
+      renderTabBar={renderTabBar}
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+    />
   );
 }
 
@@ -93,11 +69,6 @@ export default () => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    position: 'relative',
-  },
   WalletList: {
     marginTop: 20,
     height: 70,
@@ -146,5 +117,9 @@ const styles = StyleSheet.create({
   PercentRedText: {
     marginRight: 10,
     color: 'red',
+  },
+  tabBarLabel: {
+    alignItems: 'center',
+    justifyContent: 'center',
   }
-});
+})

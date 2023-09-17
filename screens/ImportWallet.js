@@ -5,7 +5,6 @@ import { Input, NativeBaseProvider } from 'native-base';
 import { AntDesign, Ionicons, EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-
 function ImportWallet() {
     const navigation = useNavigation();
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     lineStyle:{
         marginTop: 20,
         borderBottomWidth: 1,
-        borderBottomColor: 'grey',
+        borderBottomColor: '#d9d9d9',
     },
     RecoveryLabelPanel: {
         flexDirection: 'row',
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
     slash: {
         width: 30,
         borderBottomWidth: 4,
-        borderBottomColor: 'grey',
+        borderBottomColor: '#d9d9d9',
         borderRadius: 2,
     },
     keyInput: {

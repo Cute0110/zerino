@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         width: 16,
         height: 16,
         borderRadius: 8,
-        borderColor: 'grey',
+        borderColor: '#d9d9d9',
         borderWidth: 1,
     },
     PasswordDotFull: {

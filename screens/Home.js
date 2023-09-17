@@ -1,69 +1,56 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, useWindowDimensions, Image } from 'react-native';
 import { NativeBaseProvider} from 'native-base';
 import { MaterialCommunityIcons, AntDesign, Ionicons, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import MyWalletList from './MyWalletList';
+import HomeContent from './HomeContent';
 
 function Home() {
     const navigation = useNavigation();
+    const layout = useWindowDimensions();
+
+    const [pageType, setPageType] = useState(0);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.titlePanel}>
-                <Text style={styles.titleText}>Summary</Text>
-                <Text style={styles.editText}>Edit</Text>
-                <Ionicons name="scan" size={24} color="black" style={styles.mR10}/>
-                <TouchableOpacity onPress={() => navigation.navigate("AddWallet")} >
-                    <MaterialCommunityIcons name="wallet-plus-outline" size={24} color="black"/>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.imgPanel}>
-                <View style={styles.eachImgPanel}>
-                    <View style={styles.circleImg}>
+        <View style={{...styles.container, height: layout.height}}>
+            {pageType == 0 ? (<HomeContent />) : (<></>)}
+            {pageType == 1 ? (<HomeContent />) : (<></>)}
+            {pageType == 2 ? (<HomeContent />) : (<></>)}
+            {pageType == 3 ? (<HomeContent />) : (<></>)}
+            {pageType == 4 ? (<HomeContent />) : (<></>)}
 
-                    </View>
-                    <Text style={styles.circleImgText}>Fee Update:</Text>
-                    <Text style={styles.circleImgText}>Bridge</Text>
-                </View>
-                <View style={styles.eachImgPanel}>
-                    <View style={styles.circleImg}>
-                    </View>
-                    <Text style={styles.circleImgText}>BASE now</Text>
-                    <Text style={styles.circleImgText}>live!</Text>
-                </View>
-                <View style={styles.eachImgPanel}>
-                    <View style={styles.circleImg}>
-
-                    </View>
-                    <Text style={styles.circleImgText}>Zerion</Text>
-                    <Text style={styles.circleImgText}>Wallet</Text>
-                </View>
-            </View>
-            <View>
-                <MyWalletList />
-            </View>
             <View style={styles.footerTabPanel}>
                 <View style={styles.eachTabPanel}>
-                    <MaterialIcons name="bar-chart" size={20} color="black" />
-                    <Text style={styles.tabText}>Home</Text>
+                    <TouchableOpacity onPress={() => setPageType(0)} style={{alignItems: 'center'}}>
+                        <MaterialIcons name="bar-chart" size={20} color={`${pageType == 0 ? '#026efd' : 'grey'}`} />
+                        <Text style={{...styles.tabText, color: `${pageType == 0 ? '#026efd' : 'grey'}`}}>Home</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.eachTabPanel}>
-                    <AntDesign name="find" size={20} color="black" />
-                    <Text style={styles.tabText}>Explore</Text>
+                    <TouchableOpacity onPress={() => setPageType(1)} style={{alignItems: 'center'}}>
+                        <AntDesign name="find" size={20} color={`${pageType == 1 ? '#026efd' : 'grey'}`} />
+                        <Text style={{...styles.tabText, color: `${pageType == 1 ? '#026efd' : 'grey'}`}}>Explore</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.eachTabPanel}>
-                    <Fontisto name="arrow-swap" size={20} color="black" />
-                    <Text style={styles.tabText}>Actions</Text>
+                    <TouchableOpacity onPress={() => setPageType(2)} style={{alignItems: 'center'}}>
+                        <Fontisto name="arrow-swap" size={20} color={`${pageType == 2 ? '#026efd' : 'grey'}`} />
+                        <Text style={{...styles.tabText, color: `${pageType == 2 ? '#026efd' : 'grey'}`}}>Actions</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.eachTabPanel}>
-                    <AntDesign name="earth" size={20} color="black" />
-                    <Text style={styles.tabText}>Browser</Text>
+                    <TouchableOpacity onPress={() => setPageType(3)} style={{alignItems: 'center'}}>
+                        <AntDesign name="earth" size={20} color={`${pageType == 3 ? '#026efd' : 'grey'}`} />
+                        <Text style={{...styles.tabText, color: `${pageType == 3 ? '#026efd' : 'grey'}`}}>Browser</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.eachTabPanel}>
-                    <Ionicons name="settings-outline" size={20} color="black" />
-                    <Text style={styles.tabText}>Settings</Text>
+                    <TouchableOpacity onPress={() => setPageType(4)} style={{alignItems: 'center'}}>
+                        <Ionicons name="settings-outline" size={20} color={`${pageType == 4 ? '#026efd' : 'grey'}`} />
+                        <Text style={{...styles.tabText, color: `${pageType == 4 ? '#026efd' : 'grey'}`}}>Settings</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             <StatusBar style="auto" />
@@ -85,7 +72,7 @@ export default () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f2f2f2',
         position: 'relative',
     },
     mR10: {
@@ -125,8 +112,12 @@ const styles = StyleSheet.create({
     circleImg: {
         width: 70,
         height: 70,
-        backgroundColor: 'grey',
+        backgroundColor: '#d9d9d9',
         borderRadius: 35,
+    },
+    PhisingDefenseImage: {
+        width: 70,
+        height: 70,
     },
     footerTabPanel: {
         position: 'absolute',
@@ -135,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         bottom: 0,
         left: 0,
-        borderTopColor: 'grey',
+        borderTopColor: '#d9d9d9',
         borderTopWidth: 1,
 
         flexDirection: 'row',

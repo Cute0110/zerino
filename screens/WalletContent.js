@@ -1,14 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, useWindowDimensions } from 'react-native';
 import { NativeBaseProvider} from 'native-base';
 import { FontAwesome, AntDesign, Ionicons, Entypo, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import MyWalletList from './MyWalletList';
 
-function WalletContent() {
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import Tokens from './Tokens';
+import History from './History';
+import Watchlist from './Watchlist';
+
+function WalletContent ({datas}) {
     const navigation = useNavigation();
     const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
+
+    const {address, network, totalCrypto, offsetCrypto, offsetPercent, watchType} = datas.params;
+    const [totalCryptoFirst, setToTalCryptoFirst] = useState(0);
+    const [totalCryptoSecond, setToTalCryptoSecond] = useState(0);
+
+    useEffect(() => {
+        setToTalCryptoFirst(totalCrypto.split(".")[0]);
+        setToTalCryptoSecond(totalCrypto.split(".")[1]);
+    }, [totalCrypto])
 
     const onDotButtonPress = () => {
         setIsBridgeModalVisible(true);
@@ -17,6 +30,51 @@ function WalletContent() {
     const onBridgeModalClose = () => {
         setIsBridgeModalVisible(false);
     }
+
+    const layout = useWindowDimensions();
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: 'first', title: 'Tokens' },
+        { key: 'second', title: 'NFTs' },
+        { key: 'third', title: 'History' },
+        { key: 'fourth', title: 'Perks' },
+    ]);
+
+    const onIndexChange = (index) => {
+        setIndex(index);
+    }
+
+    const renderScene = ({ route }) => {
+        switch (route.key) {
+            case 'first':
+                return <Tokens walletInfo={datas.params}/>;
+            case 'second':
+                return <Watchlist />;
+            case 'third':
+                return <History walletInfo={datas.params}/>;
+            case 'fourth':
+                return <Watchlist />;
+            default:
+            return null;
+        }
+    };
+    
+    const renderTabBar = props => (
+        <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: '#026efd' }}
+            style={{ backgroundColor: 'white' }}
+            renderLabel={({ route, focused, color }) => (
+            <View>
+                {focused ? (
+                <Text style={{color: '#026efd', fontWeight: 'bold'}} onPress={() => onPress(2)}>{route.title}</Text>
+                ) : (
+                <Text style={{color: 'grey', fontWeight: 'bold'}} onPress={() => onPress(3)}>{route.title}</Text>
+                )}
+            </View>
+            )}
+        />
+    );
 
     return (
         <View style={styles.container}>
@@ -68,8 +126,8 @@ function WalletContent() {
                 <View style={styles.ArrowAndTextStyle}>
                     <AntDesign name="arrowleft" size={20} color="black" onPress={() => navigation.navigate("Home")}/>
                     <View style={styles.WalletAddressPanel}>
-                        <Text style={styles.WalletAddressText}>0x667...770</Text>
-                        <Text style={styles.WalletNetworkText}>All networks</Text>
+                        <Text style={styles.WalletAddressText}>{address}</Text>
+                        <Text style={styles.WalletNetworkText}>{network}</Text>
                     </View>
                 </View>
                 <View style={styles.TitleIconPanel}>
@@ -78,42 +136,72 @@ function WalletContent() {
                 </View>
             </View>
             <View style={styles.WalletInfoPanel}>
-              <Image
-                  source={require('../assets/rocket.png')}
-                  style={styles.WalletImage}
-                  alt="image"
-              ></Image>
-              <Text style={styles.WalletCrypto}>$0</Text>
-            </View>
-            <View style={styles.WalletInfoPanel}>
-                <View style={styles.ControlButtonPanel}>
-                    <MaterialCommunityIcons name="view-grid-plus-outline" size={20} color="#026efd" />
-                    <Text style={styles.ControlButtonText}>Receive</Text>
-                </View>
-                <View style={styles.ControlButtonPanel}>
-                    <Ionicons name="ios-paper-plane" size={20} color="#026efd" />
-                    <Text style={styles.ControlButtonText}>Send</Text>
-                </View>
-                <View style={styles.ControlButtonPanel}>
-                    <AntDesign name="swap" size={20} color="#026efd" />
-                    <Text style={styles.ControlButtonText}>Swap</Text>
-                </View>
-                <View style={styles.DotButtonPanel}>
-                    <TouchableOpacity onPress={onDotButtonPress}>
-                        <Entypo name="dots-three-vertical" size={24} color="#026efd"/>
-                    </TouchableOpacity>
+                <Image
+                    source={require('../assets/WalletIcon.png')}
+                    style={styles.WalletImage}
+                    alt="image"
+                ></Image>
+                <View style={styles.WalletCryptoInfoPanel}>
+                    <Text style={styles.WalletCrypto}>${totalCryptoFirst}
+                        {totalCryptoSecond ? (
+                            <Text style={styles.WalletCryptoSecond}>.{totalCryptoSecond}</Text>
+                        ) :(<></>)}
+                    </Text>
+                    {totalCrypto != 0 ? (
+                        <Text style={styles.WalletOffsetInfo}>{offsetPercent > 0 ? '+' : ''}{offsetPercent}% (${offsetCrypto})</Text>
+                    ) : (<></>)
+                    }
                 </View>
             </View>
+            {watchType ? (
+                <View style={styles.WalletInfoPanel}>
+                    <View style={styles.ControlButtonPanel}>
+                        <AntDesign name="check" size={20} color="#026efd" />
+                        <Text style={styles.ControlButtonText}>Added</Text>
+                    </View>
+                    <View style={styles.ControlButtonPanel}>
+                        <AntDesign name="sharealt" size={20} color="#026efd" />
+                        <Text style={styles.ControlButtonText}>Share</Text>
+                    </View>
+                </View>
+            ) : (
+                <View style={styles.WalletInfoPanel}>
+                    <View style={styles.ControlButtonPanel}>
+                        <MaterialCommunityIcons name="view-grid-plus-outline" size={20} color="#026efd" />
+                        <Text style={styles.ControlButtonText}>Receive</Text>
+                    </View>
+                    <View style={styles.ControlButtonPanel}>
+                        <Ionicons name="ios-paper-plane" size={20} color="#026efd" />
+                        <Text style={styles.ControlButtonText}>Send</Text>
+                    </View>
+                    <View style={styles.ControlButtonPanel}>
+                        <AntDesign name="swap" size={20} color="#026efd" />
+                        <Text style={styles.ControlButtonText}>Swap</Text>
+                    </View>
+                    <View style={styles.DotButtonPanel}>
+                        <TouchableOpacity onPress={onDotButtonPress}>
+                            <Entypo name="dots-three-vertical" size={24} color="#026efd"/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )}
+            <TabView
+                renderTabBar={renderTabBar}
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={onIndexChange}
+                initialLayout={{ width: layout.width }}
+            />
             <StatusBar style="auto" />
         </View>
     );
 }
 
-export default () => {
+export default ({route}) => {
     return (
         <NativeBaseProvider>
 
-            <WalletContent />
+            <WalletContent datas={route}/>
 
         </NativeBaseProvider>
     )
@@ -152,6 +240,9 @@ const styles = StyleSheet.create({
     },
     WalletNetworkText: {
     },
+    WalletCryptoInfoPanel: {
+
+    },
     WalletInfoPanel: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -166,6 +257,11 @@ const styles = StyleSheet.create({
     WalletCrypto: {
         fontSize: 25,
         fontWeight: 'bold',
+    },
+    WalletCryptoSecond: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'grey',
     },
     ControlButtonPanel: {
         flexDirection: 'row',
@@ -227,5 +323,10 @@ const styles = StyleSheet.create({
     },
     ModalListDescriptionText: {
         color: 'grey'
+    },
+    WalletOffsetInfo: {
+        fontSize: 15,
+        color: '#00cc00',
+        fontWeight: 'bold',
     },
 });

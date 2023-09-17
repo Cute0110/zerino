@@ -1,4 +1,4 @@
-# Login-UI-UX-React-Native
+# Zerion
 
 [Tutorial Part 1](https://youtu.be/zP5F9ITdMqg)
 
