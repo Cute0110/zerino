@@ -6,6 +6,7 @@ import Home from './screens/Home';
 import ImportWallet from './screens/ImportWallet';
 import SetPassword from './screens/SetPassword';
 import WalletContent from './screens/WalletContent';
+import ConnectWallet from './screens/ConnectWallet';
 import TestComponent from './screens/test';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,6 +18,7 @@ function App() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}} >
       {/* <Stack.Screen name="test" component={TestComponent} /> */}
+      <Stack.Screen name="ConnectWallet" component={ConnectWallet} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="WalletContent" component={WalletContent} />
       <Stack.Screen name="AddWallet" component={AddWallet} />

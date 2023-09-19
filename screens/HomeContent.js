@@ -15,7 +15,7 @@ function HomeContent() {
     return (
         <View style={{height: layout.height}}>
             <View style={styles.titlePanel}>
-                <Text style={styles.titleText}>Summary</Text>
+                <Text style={styles.titleText}>My App</Text>
                 <Text style={styles.editText}>Edit</Text>
                 <Ionicons name="scan" size={24} color="black" style={styles.mR10}/>
                 <TouchableOpacity onPress={() => navigation.navigate("AddWallet")} >

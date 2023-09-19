@@ -91,7 +91,7 @@ function EnterPassword() {
                 </TouchableOpacity>
             </Modal>
             <View style={styles.ZerionTextPanel}>
-                <Text style={styles.ZerionText}>Z E R I O N</Text>
+                <Text style={styles.ZerionText}>My APp</Text>
             </View>
             <View style={styles.SetPasswordTextPanel}>
                 <Text style={styles.SetPasswordText}>{stateText}</Text>

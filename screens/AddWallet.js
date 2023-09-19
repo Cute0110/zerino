@@ -73,10 +73,12 @@ function AddWallet() {
                     </View>
                 </ImageBackground>
             </View>
-            <View style={styles.ConnectWalletPanel}>
-                <Ionicons name="link" size={20} color="grey" />
-                <Text style={styles.ConnectWalletText}>Connect a wallet</Text>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate("ConnectWallet")}>
+                <View style={styles.ConnectWalletPanel}>
+                    <Ionicons name="link" size={20} color="grey" />
+                    <Text style={styles.ConnectWalletText}>Connect a wallet</Text>
+                </View>
+            </TouchableOpacity>
             <View style={styles.lineStyle}>
             </View>
             <View style={styles.TrackWalletPanel}>
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     TitleStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 30,
+        marginTop: 20,
     },
     AddWalletText: {
         fontSize: 20,
