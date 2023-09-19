@@ -4,9 +4,61 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 import { Input, NativeBaseProvider } from 'native-base';
 import { AntDesign, Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+// import Web3 from 'web3';
 
 function ConnectWallet() {
     const navigation = useNavigation();
+
+    // const [web3, setWeb3] = useState(null);
+    // const [accountsName, setAccountsName] = useState("aaa");
+
+    // useEffect(() => {
+    //     async function connectToMetaMask() {
+    //         const web3 = new Web3(Web3.givenProvider);
+
+    //         // Set the web3 instance in the state
+    //         setWeb3(web3);
+    //     }
+
+    //     connectToMetaMask();
+    // }, []);
+
+    // const handleSendTransaction = async () => {
+    //     // Check if web3 is initialized
+    //     if (!web3) {
+    //         setAccountsName("Null");
+    //         return;
+    //     }
+
+    //     // Get the accounts from MetaMask
+    //     const accounts = await web3.eth.getAccounts();
+
+    //     // Check if there are any accounts
+    //     if (accounts.length === 0) {
+    //         setAccountsName("Null")
+    //         return;
+    //     }
+
+    //     // Set the account to use for the transaction
+    //     const from = accounts[0];
+
+    //     setAccountsName(from);
+
+    //     // // Set the recipient and amount for the transaction
+    //     // const to = '0x...';
+    //     // const value = '1000000000000000000'; // 1 ETH
+
+    //     // // Set the transaction options
+    //     // const options = {
+    //     //     from,
+    //     //     to,
+    //     //     value,
+    //     // };
+
+    //     // // Send the transaction
+    //     // const result = await web3.eth.sendTransaction(options);
+    //     // console.log(result);
+    // };
 
     return (
         <View style={styles.container}>

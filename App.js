@@ -18,8 +18,8 @@ function App() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}} >
       {/* <Stack.Screen name="test" component={TestComponent} /> */}
-      <Stack.Screen name="ConnectWallet" component={ConnectWallet} />
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="ConnectWallet" component={ConnectWallet} />
       <Stack.Screen name="WalletContent" component={WalletContent} />
       <Stack.Screen name="AddWallet" component={AddWallet} />
       <Stack.Screen name="EnterPassword" component={EnterPassword} />
